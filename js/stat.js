@@ -6,9 +6,11 @@ var GAP = 10;
 var CLOUD_WIDTH = 420;
 var CLOUD_HEIGHT = 270;
 var FONT_SIZE = 16;
+var MAX_BAR_HEIGHT = 150;
 
 var messageTexts = ['Ура вы победили!', 'Список результатов:'];
 
+// функция отрисовки облака
 var renderCloud = function (ctx, x, y, color) {
   ctx.fillStyle = color;
   ctx.beginPath();
@@ -26,10 +28,12 @@ var renderCloud = function (ctx, x, y, color) {
   ctx.fill();
 };
 
+// нахождение максимального элемента массива
 var getMaxElement = function (arr) {
-  var maxElement = 0;
+  var maxElement = arr[0];
 
   for (var i = 0; i < arr.length; i++) {
+
     if (arr[i] > maxElement) {
       maxElement = arr[i];
     }
@@ -37,10 +41,32 @@ var getMaxElement = function (arr) {
   return maxElement;
 };
 
+// выбор цвета
+var getColorBar = function (arrNames) {
+
+  if (arrNames === 'Вы') {
+    return 'rgba(255, 0, 0, 1)';
+  } else {
+    return 'rgba(0, 0, 255, ' + (Math.random() * 9 + 1) / 10 + ')';
+  }
+};
+
+// функция отрисовки столбца
+var drawABar = function (ctx, arrNames, arrValues, x, y, height, width) {
+  ctx.fillStyle = 'black';
+  ctx.fillText(arrNames, x, y + GAP);
+  ctx.fillText(Math.floor(arrValues), x, y - FONT_SIZE - height);
+
+  ctx.fillStyle = getColorBar(arrNames);
+  ctx.fillRect(x, y, width, -height);
+};
+
 window.renderStatistics = function (ctx, names, times) {
+  // рисуем облако
   renderCloud(ctx, CLOUD_X + GAP, CLOUD_Y + GAP, 'rgba(0, 0, 0, 0.7)');
   renderCloud(ctx, CLOUD_X, CLOUD_Y, '#fff');
 
+  // выводим текст поздравления
   ctx.font = FONT_SIZE + 'px PT Mono';
   ctx.textBaseline = 'hanging';
   ctx.fillStyle = 'black';
@@ -49,23 +75,15 @@ window.renderStatistics = function (ctx, names, times) {
     ctx.fillText(messageTexts[i], CLOUD_X + CLOUD_WIDTH / 2 - messageTexts[i].length * FONT_SIZE / 4, CLOUD_Y + GAP * 2 + FONT_SIZE * i);
   }
 
+  // вычисляем максимальное значение времени
   var maxTime = getMaxElement(times);
 
-  var maxBarHeight = 150;
+  // вычисляем ширину столбиков
   var barWidth = CLOUD_WIDTH / (names.length * 2 + 1);
 
+  // рисуем все столбцы
   for (i = 0; i < names.length; i++) {
-    var barHeight = maxBarHeight * times[i] / maxTime;
-
-    ctx.fillStyle = 'black';
-    ctx.fillText(names[i], CLOUD_X + barWidth * (i * 2 + 1), CLOUD_HEIGHT - GAP * 2);
-    ctx.fillText(Math.floor(times[i]), CLOUD_X + barWidth * (i * 2 + 1), CLOUD_HEIGHT - GAP * 3 - FONT_SIZE - barHeight);
-
-    if (names[i] === 'Вы') {
-      ctx.fillStyle = 'rgba(255, 0, 0, 1)';
-    } else {
-      ctx.fillStyle = 'rgba(0, 0, 255, ' + (Math.random() + 0.05) + ')';
-    }
-    ctx.fillRect(CLOUD_X + barWidth * (i * 2 + 1), CLOUD_HEIGHT - GAP * 3, barWidth, -barHeight);
+    var barHeight = MAX_BAR_HEIGHT * times[i] / maxTime;
+    drawABar(ctx, names[i], times[i], CLOUD_X + barWidth * (i * 2 + 1), CLOUD_HEIGHT - GAP * 3, barHeight, barWidth);
   }
 };
