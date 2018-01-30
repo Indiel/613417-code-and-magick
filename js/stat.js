@@ -33,31 +33,36 @@ var getMaxElement = function (arr) {
   var maxElement = arr[0];
 
   for (var i = 0; i < arr.length; i++) {
-
     if (arr[i] > maxElement) {
       maxElement = arr[i];
     }
   }
+
   return maxElement;
 };
 
-// выбор цвета
-var getColorBar = function (arrNames) {
+// задаем диапазон рандомному числу
+var getRangeRandom = function (min, max) {
+  return Math.random() * (max - min) + min;
+};
 
-  if (arrNames === 'Вы') {
+// выбор цвета
+var getColorBar = function (name) {
+
+  if (name === 'Вы') {
     return 'rgba(255, 0, 0, 1)';
   } else {
-    return 'rgba(0, 0, 255, ' + (Math.random() * 9 + 1) / 10 + ')';
+    return 'rgba(0, 0, 255, ' + getRangeRandom(0.05, 1) + ')';
   }
 };
 
 // функция отрисовки столбца
-var drawABar = function (ctx, arrNames, arrValues, x, y, height, width) {
+var drawBar = function (ctx, name, value, x, y, height, width) {
   ctx.fillStyle = 'black';
-  ctx.fillText(arrNames, x, y + GAP);
-  ctx.fillText(Math.floor(arrValues), x, y - FONT_SIZE - height);
+  ctx.fillText(name, x, y + GAP);
+  ctx.fillText(Math.floor(value), x, y - FONT_SIZE - height);
 
-  ctx.fillStyle = getColorBar(arrNames);
+  ctx.fillStyle = getColorBar(name);
   ctx.fillRect(x, y, width, -height);
 };
 
@@ -84,6 +89,6 @@ window.renderStatistics = function (ctx, names, times) {
   // рисуем все столбцы
   for (i = 0; i < names.length; i++) {
     var barHeight = MAX_BAR_HEIGHT * times[i] / maxTime;
-    drawABar(ctx, names[i], times[i], CLOUD_X + barWidth * (i * 2 + 1), CLOUD_HEIGHT - GAP * 3, barHeight, barWidth);
+    drawBar(ctx, names[i], times[i], CLOUD_X + barWidth * (i * 2 + 1), CLOUD_HEIGHT - GAP * 3, barHeight, barWidth);
   }
 };
