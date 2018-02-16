@@ -86,39 +86,12 @@ var inputFireball = setup.querySelector('input[name="fireball-color"]');
 var coatsColorsCopy = COATS_COLORS.slice();
 var eyesColorsCopy = EYES_COLORS.slice();
 
-// var initialValueArray = 1;
-// var changeColor = function (element, input, arr, str) {
-//   if (initialValueArray >= arr.length) {
-//     initialValueArray = 0;
-//   }
-//   element.style[str] = arr[initialValueArray];
-//   input.value = arr[initialValueArray];
-//   initialValueArray++;
-// };
-
 var changeColor = function (element, input, arr, str) {
   var color = arr.shift();
   arr.push(color);
   element.style[str] = arr[0];
   input.value = arr[0];
 };
-
-// var mainWizard = document.querySelector('.wizard');
-// mainWizard.addEventListener('click', function (evt) {
-//   changeColor(wizardCoat, inputCoat, coatsColorsCopy, 'fill');
-// });
-
-// var changeColor = function (element, input, arr, str) {
-//   for (var j = 0; j < arr.length; j++) {
-//     (function (index) {
-//       // if (i >= arr.length) {
-//       //   i = 0;
-//       // }
-//       element.style[str] = arr[index];
-//       input.value = arr[index];
-//     })(j);
-//   }
-// };
 
 wizardCoat.addEventListener('click', function () {
   changeColor(wizardCoat, inputCoat, coatsColorsCopy, 'fill');
