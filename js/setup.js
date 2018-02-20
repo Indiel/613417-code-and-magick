@@ -85,6 +85,16 @@
     evt.preventDefault();
   });
 
+  shopElement.addEventListener('dragend', function (evt) {
+    artifactsElement.style.outline = '';
+    evt.preventDefault();
+  });
+
+  artifactsElement.addEventListener('dragend', function (evt) {
+    artifactsElement.style.outline = '';
+    evt.preventDefault();
+  });
+
   artifactsElement.addEventListener('dragleave', function (evt) {
     evt.target.style.backgroundColor = '';
     evt.target.parentNode.style.backgroundColor = '';
