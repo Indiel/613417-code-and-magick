@@ -2,7 +2,7 @@
 
 window.backend = (function () {
 
-  var listenerEvent = function (xhrElem, onLoad, onError) {
+  var getResponseStatus = function (xhrElem, onLoad, onError) {
     xhrElem.addEventListener('load', function () {
       if (xhrElem.status === 200) {
         onLoad(xhrElem.response);
@@ -28,7 +28,7 @@ window.backend = (function () {
       var xhr = new XMLHttpRequest();
       xhr.responseType = 'json';
 
-      listenerEvent(xhr, onLoad, onError);
+      getResponseStatus(xhr, onLoad, onError);
 
       xhr.open('POST', URL);
       xhr.send(data);
@@ -39,7 +39,7 @@ window.backend = (function () {
       var xhr = new XMLHttpRequest();
       xhr.responseType = 'json';
 
-      listenerEvent(xhr, onLoad, onError);
+      getResponseStatus(xhr, onLoad, onError);
 
       xhr.open('GET', URL);
       xhr.send();

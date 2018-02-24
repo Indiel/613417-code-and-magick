@@ -26,8 +26,9 @@
     var fragment = document.createDocumentFragment();
 
     for (var i = 0; i < 4; i++) {
-      var wizard = Math.floor(Math.random() * wizards.length);
-      fragment.appendChild(renderWizard(wizards[wizard]));
+      var index = Math.floor(Math.random() * wizards.length);
+      var wizard = wizards.splice(index, 1);
+      fragment.appendChild(renderWizard(wizard[0]));
     }
     similarListElement.appendChild(fragment);
   };
