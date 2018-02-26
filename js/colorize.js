@@ -20,23 +20,36 @@
   var inputEyes = setup.querySelector('input[name="eyes-color"]');
   var inputFireball = setup.querySelector('input[name="fireball-color"]');
 
+  window.colorizeWizard = {
+    colorCoat: '',
+    colorEyes: '',
+    colorFireball: ''
+  };
+
   var changeColor = function (element, input, arr, str) {
     var color = arr.shift();
     arr.push(color);
     element.style[str] = arr[0];
     input.value = arr[0];
+    return arr[0];
   };
 
   wizardCoat.addEventListener('click', function () {
-    changeColor(wizardCoat, inputCoat, coatsColorsCopy, 'fill');
+    window.colorizeWizard.colorCoat = changeColor(wizardCoat, inputCoat, coatsColorsCopy, 'fill');
+    window.debounce(window.updateWizards);
+    return window.colorizeWizard.colorCoat;
   });
 
   wizardEyes.addEventListener('click', function () {
-    changeColor(wizardEyes, inputEyes, eyesColorsCopy, 'fill');
+    window.colorizeWizard.colorEyes = changeColor(wizardEyes, inputEyes, eyesColorsCopy, 'fill');
+    window.debounce(window.updateWizards);
+    return window.colorizeWizard.colorEyes;
   });
 
   wizardFireball.addEventListener('click', function () {
-    changeColor(wizardFireball, inputFireball, FIREBALL_COLORS, 'background');
+    window.colorizeWizard.colorFireball = changeColor(wizardFireball, inputFireball, FIREBALL_COLORS, 'background');
+    window.debounce(window.updateWizards);
+    return window.colorizeWizard.colorFireball;
   });
 
 })();
